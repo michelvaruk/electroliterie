@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		{% include "_partials/_head.html.twig" %}
+		<title>Admin Must Ménager |
+			{% block title %}Accueil
+			{% endblock %}
+		</title>
+
+		{# <meta property="og:image" content={% block metaImage %} "{{ asset('images/logos/' ~ siteInfo.getSiteInfo.logoName) }}" {% endblock %}> #}
+		{# <meta property="og:description" content={% block metaDescription %} "{{ siteInfo.getSiteInfo.title }}" {% endblock %}> {% block stylesheets %}{% endblock %} #}
+
+	</head>
+
+	<body>
+		<nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+			<div class="px-3 py-3 lg:px-5 lg:pl-3">
+				<div class="flex items-center justify-between">
+					<div class="flex items-center justify-start rtl:justify-end">
+						<button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+							<span class="sr-only">Ouvrir le menu</span>
+							<svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+								<path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+							</svg>
+						</button>
+						<a href="{{ path('app_main')}}" target="_blank" class="flex ms-2 md:me-24">
+							<img src="{{ asset('images/logo_must_en_attendant.png') }}" class="h-10 me-3" alt="{# {{ 'logo du ' ~ siteInfo.getSiteInfo.title}} #}"/>
+							<span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">{# {{ siteInfo.getSiteInfo.title }} #}
+								- Administration</span>
+						</a>
+					</div>
+					<div class="flex items-center">
+						<div class="flex items-center ms-3">
+							<div>
+								<button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+									<span class="sr-only">Menu utilisateur</span>
+										<img class="w-8 h-8 rounded-full" src="{{ asset('images/silhouette-trombi-homme.svg')}}" alt="photo de l'utilisateur">
+								</button>
+							</div>
+							<div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
+								<div class="px-4 py-3" role="none">
+									<p class="text-sm text-gray-900 dark:text-white" role="none">
+										{{ app.user.firstname ~ ' ' ~ app.user.lastname }}
+									</p>
+									<p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
+										{{ app.user.email }}
+									</p>
+								</div>
+								<ul class="py-1" role="none">
+									<li>
+										<a href="{{ path('app_edit_account_show') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Mon profil</a>
+									</li>
+									<li>
+										<a href="{{ path('app_logout') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Se déconnecter</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+
+		<aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
+			<div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+				<ul class="space-y-2 font-medium">
+					<li>
+						<a href="{{ path('app_edit_family_index') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {% if 'family' in app.request.get('_route')|split('_') %}item-active{% endif %}">
+							<span class="flex-1 ms-3 whitespace-nowrap">Familles de produits</span>
+						</a>
+					</li>
+					<li>
+						<a href="{{ path('app_edit_brand_index') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {% if 'brand' in app.request.get('_route')|split('_') %}item-active{% endif %}">
+							<span class="flex-1 ms-3 whitespace-nowrap">Marques</span>
+						</a>
+					</li>
+					<li>
+						<a href="{{ path('app_edit_product_index') }}" class="admin-menu-item flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {% if 'product' in app.request.get('_route')|split('_') %}item-active{% endif %}">
+							<span class="flex-1 ms-3 whitespace-nowrap">Produits</span>
+						</a>
+					</li>
+
+					<li>
+						<a href="{{ path('app_edit_promotion_index') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {% if 'promotion' in app.request.get('_route')|split('_') %}item-active{% endif %}">
+							<span class="flex-1 ms-3 whitespace-nowrap">Promotions</span>
+						</a>
+					</li>
+					<li>
+						<a href="{{ path('app_edit_delivery_mode_index') }}" class="admin-menu-item flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {% if 'delivery' in app.request.get('_route')|split('_') %}item-active{% endif %}">
+							<span class="flex-1 ms-3 whitespace-nowrap">Modes de livraison</span>
+						</a>
+					</li>
+					<li>
+						<a href="{{ path('app_edit_order_index') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {% if 'order' in app.request.get('_route')|split('_') %}item-active{% endif %}">
+							<span class="flex-1 ms-3 whitespace-nowrap">Commandes</span>
+						</a>
+					</li>
+					<li>
+						<a href="{{ path('app_edit_about_index') }}" class="admin-menu-item flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {% if 'about' in app.request.get('_route')|split('_') %}item-active{% endif %}">
+						   	{# <svg xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 576 512"><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96zM252 160c0 11 9 20 20 20h44v44c0 11 9 20 20 20s20-9 20-20V180h44c11 0 20-9 20-20s-9-20-20-20H356V96c0-11-9-20-20-20s-20 9-20 20v44H272c-11 0-20 9-20 20z"/></svg> #}
+							<span class="flex-1 ms-3 whitespace-nowrap">Qui sommes-nous</span>
+						</a>
+					</li>
+					<li>
+						<a href="{{ path('app_edit_profession_index') }}" class="admin-menu-item flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {% if 'profession' in app.request.get('_route')|split('_') %}item-active{% endif %}">
+							<span class="flex-1 ms-3 whitespace-nowrap">Métiers</span>
+						</a>
+					</li>
+					<li>
+						<a href="{{ path('app_edit_service_index') }}" class="admin-menu-item flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {% if 'service' in app.request.get('_route')|split('_') %}item-active{% endif %}">
+							<span class="flex-1 ms-3 whitespace-nowrap">Services</span>
+						</a>
+					</li>
+					<li>
+						<a href="{{ path('app_edit_contact_index') }}" class="admin-menu-item flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {% if 'contact' in app.request.get('_route')|split('_') %}item-active{% endif %}">
+							<span class="flex-1 ms-3 whitespace-nowrap">Contact</span>
+						</a>
+					</li>
+					<li>
+						<a href="{{ path('app_edit_customer_index') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {% if 'customer' in app.request.get('_route')|split('_') %}item-active{% endif %}">
+							<span class="flex-1 ms-3 whitespace-nowrap">Clients</span>
+						</a>
+					</li>
+					<li>
+						<a href="{{ path('app_edit_user_index') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {% if 'user' in app.request.get('_route')|split('_') %}item-active{% endif %}">
+							<span class="flex-1 ms-3 whitespace-nowrap">Administrateurs</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</aside>
+		<main class="p-4 sm:ml-64 mt-16" id="admin">
+			{% include "_partials/_flash.html.twig" %}
+			{% block body %}{% endblock %}
+		</main>
+		{% block script %}{% endblock %}
+	</body>
+</html>

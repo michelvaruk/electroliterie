@@ -1,0 +1,11 @@
+technology: technologie
+cover: accueil
+support: maintien
+width: largeur
+length: longueur
+type: type
+colorName: couleur
+height: hauteur
+feetShape: forme des pieds
+ORDER_CREATED: En attente de validation client
+ORDER_COMPLETE: En attente de règlement

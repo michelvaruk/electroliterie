@@ -1,0 +1,42 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}Liste des articles de la page "qui sommes-nous ?"
+{% endblock %}
+
+{% block body %}
+	<div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 ">
+		<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+			<table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+				<caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+					Page "qui sommes-nous"
+                    <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Voici la liste des articles présentés sur la page "qui sommes-nous ?".</p>
+				</caption>
+				<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+					<tr>
+                        <th scope="col" class="px-6 py-3" >Photo</th>
+                        <th scope="col" class="px-6 py-3" >Texte</th>
+                        <th scope="col" class="px-6 py-3" >Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for article in about %}
+						<tr class="bg-white border-b hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 max-h-10">
+							<td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                                {% if article.pictureName %}
+                                    <img src="{{ asset('images/pictures/' ~ article.pictureName) }}" alt="Image de la section qui sommes-nous" class="admin-pic">
+                                {% endif %}
+                            </td>
+							<td class="px-6 py-4">{{ article.description|raw }}</td>
+							<td class="px-6 py-4">
+								<a href="{{ path('app_edit_about_edit', {'id': article.id}) }}" class="text-orange-500">Modifier</a>
+                            </td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+            <div class="admin-bottom p-4">
+                <a href="{{ path('app_edit_about_edit', {'id': 1})}}" class="block w-fit ml-auto text-orange-500 underline font-bold">Modifier les horaires du magasin</a>
+            </div>
+		</div>
+	</div>
+{% endblock %}

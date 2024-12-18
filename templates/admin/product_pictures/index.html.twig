@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ProductPictures index{% endblock %}
+
+{% block body %}
+    <h1>ProductPictures index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Alt</th>
+                <th>Type</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for product_picture in product_pictures %}
+            <tr>
+                <td>{{ product_picture.id }}</td>
+                <td>{{ product_picture.alt }}</td>
+                <td>{{ product_picture.type ? product_picture.type|join(', ') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_product_pictures_show', {'id': product_picture.id}) }}">show</a>
+                    <a href="{{ path('app_product_pictures_edit', {'id': product_picture.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_product_pictures_new') }}">Create new</a>
+{% endblock %}

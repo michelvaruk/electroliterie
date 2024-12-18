@@ -1,0 +1,10 @@
+{% extends "mail_base.html.twig" %}
+
+{% block emailContent %}
+    <h1>Création de votre compte mustmenager.fr</h1>
+    <p>À l'attention de {{ user.firstname|capitalize }} {{ user.lastname|capitalize }},</p>
+    <p>Votre compte d'administration du site Must Ménager vient d'être créé. Merci de bien vouloir suivre <a href="{{ siteBaseUrl ~ path('app_forgot_password_request') }}">ce lien</a>.</p>
+    <p>Un second mail vous sera envoyé pour vous permettre d'enregistrer votre mot de passe.</p>
+    <p>Bonne navigation !</p>
+    <p>La direction.</p>
+{% endblock %}

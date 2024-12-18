@@ -1,0 +1,7 @@
+{% extends "mail_base.html.twig" %}
+
+{% block emailContent %}
+    <h1>Nouveau message de  {{ contact.email }}</h1>
+    <p>Sujet : {{ contact.title }}</p>
+    <p>Message : {{ contact.message }}</p>
+{% endblock %}

@@ -1,0 +1,17 @@
+twig:
+    file_name_pattern: '*.twig'
+    form_themes:
+        # - '_partials/_form-template.html.twig'
+        - '@TalesFromADevFlowbite/form/default.html.twig'
+    
+    globals:
+        siteBaseUrl: '%env(SITE_BASE_URL)%'
+        client: '@App\Twig\Extension\ClientExtension'
+    
+    paths:
+        '%kernel.project_dir%/public/images': images
+        
+when@test:
+    twig:
+        strict_variables: true
+

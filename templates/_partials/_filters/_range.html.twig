@@ -1,0 +1,48 @@
+<div class="custom-wrapper">
+    <div class="input-container">
+        <div class="number">
+            <input type="number"
+                data-feature="{{ feature }}"
+                class="min-input" 
+                value="{{ items.min ? items.min }}"
+                data-filter-target="minInputValue"
+                data-action="input->filter#minInputValue">
+            <input type="number" 
+                class="max-input"
+                data-feature="{{ feature }}"
+                value="{{ items.max ? items.max }}"
+                data-filter-target="maxInputValue"
+                data-action="input->filter#maxInputValue">
+        </div>
+        <div class="slider-container">
+            <div class="slider-background">
+            </div>
+            <div class="feature-slider"
+                data-feature="{{ feature }}"
+                data-filter-target="slider">
+            </div>
+        </div>
+    </div>
+
+    <!-- Slider -->
+    <div class="range-input">
+        <input type="range" 
+                class="min-range" 
+                min="{{ items.min ? items.min }}"
+                max="{{ items.max ? items.max }}"
+                data-feature="{{ feature }}"
+                value="{{ items.min ? items.min }}"
+                data-filter-target="rangeInput"
+                data-action="input->filter#slide"
+                step="1">
+        <input type="range" 
+                class="max-range" 
+                min="{{ items.min ? items.min }}"
+                max="{{ items.max ? items.max }}"
+                data-feature="{{ feature }}"
+                data-action="input->filter#slide"
+                data-filter-target="rangeInput"
+                value="{{ items.max ? items.max }}"
+                step="1">
+    </div>
+</div>

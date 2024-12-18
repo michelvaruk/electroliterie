@@ -1,0 +1,130 @@
+{% extends "base.html.twig" %}
+{% block title %}Validation de la commande{% endblock %}
+{% block body %}
+<div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+    <section class="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
+            <h1>Récapitulatif de la commande</h1>
+            <div class="mt-6 sm:mt-8 lg:flex lg:items-start lg:gap-12 xl:gap-16">
+                <div class="min-w-0 w-[65%] space-y-8">
+                    <div class="space-y-4">
+                        {% set customer = order.customer %}
+                        <h2 class="text-xl text-left font-semibold text-gray-900 dark:text-white">Mes informations</h2>
+                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            <div>
+                                Prénom : {{ customer.firstname }}
+                            </div>
+
+                            <div>
+                                Nom : {{ customer.lastname }}
+                            </div>
+
+                            <div>
+                                Adresse email : {{ customer.email }}
+                            </div>
+
+                            <div>
+                                N° téléphone : {{ customer.phone }}
+                            </div>
+                        </div>
+                        <h2 class="text-xl text-left font-semibold text-gray-900 dark:text-white">Adresse</h2>
+                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            <div>
+                                Adresse : {{ order.invoiceAdress.adress }}
+                            </div>
+                            <div>
+                                Complément d'adresse : {{ order.invoiceAdress.adressComplement }}
+                            </div>
+                            <div>
+                                Code postal : {{ order.invoiceAdress.zipCode }}
+                            </div>
+                            <div>
+                                Ville : {{ order.invoiceAdress.city }}
+                            </div>
+                            {% if order.invoiceAdress.information %}
+                                <div class="sm:col-span-2">
+                                    Complément d'informations : {{ order.invoiceAdress.information }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        {% if order.invoiceAdress.firstname or order.invoiceAdress.lastname or order.invoiceAdress.phone %}
+                            <h2 class="text-xl text-left font-semibold text-gray-900 dark:text-white">Contact</h2>
+                            <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                                {% set contact = order.invoiceAdress %}
+                                <div>
+                                    Prénom : {{ contact.firstname }}
+                                </div>
+                                <div>
+                                    Nom : {{ contact.lastname }}
+                                </div>
+                                <div>
+                                    N° téléphone : {{ contact.phone }}
+                                </div>
+                            </div>
+                        {% endif %}
+                        
+                    </div>
+                </div>
+                <div class="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full">
+                    <div class="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6">
+                        <p class="text-xl font-semibold text-gray-900 dark:text-white">Résumé de la commande</p>
+                        <div class="space-y-4">
+                            <div class="space-y-2">
+                                {% for line in order.invoiceLines %}
+                                    <dl class="flex items-center justify-between gap-4">
+                                        <dt class="text-base font-normal text-gray-500 dark:text-gray-400">{{ line.product.reference }}</dt>
+                                        <dd class="text-base font-medium text-gray-900 dark:text-white">{{ (line.taxFreeUnitPrice * (1 + line.vatRate / 100))|number_format(2, ',', '.') }} €</dd>
+                                    </dl>
+                                    <dl class="flex items-center justify-between gap-4 italic" style="margin-top:0;">
+                                        <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Quantité : {{ line.quantity }}</dt>
+                                        <dd class="text-base font-medium text-gray-900 dark:text-white">(Dont éco-part {{ (line.taxFreeDeee * (1 + line.vatRate / 100))|number_format(2, ',', '.') }} €)</dd>
+                                    </dl>
+                                {% endfor %}
+                                <dl class="flex items-center justify-between gap-4" style="margin-top:0;">
+                                    <dt class="text-base font-normal text-gray-500 dark:text-gray-400">{{ order.deliveryMode.title }}</dt>
+                                    <dd class="text-base font-medium text-gray-900 dark:text-white">{{ (order.deliveryTaxFreePrice * 1.2)|number_format(2, ',', '.') }} €</dd>
+                                </dl>
+                                <dl class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
+                                    <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Total hors taxes</dt>
+                                    <dd class="text-base font-medium text-gray-900 dark:text-white"
+                                        data-order-target="taxFreeTotal"
+                                        data-value={{ (totalPrice / 1.2) }}>{{ (totalPrice / 1.2)|number_format(2, ',', '.') }} €</dd>
+                                </dl>
+                                <dl class="flex items-center justify-between gap-4 italic" style="margin-top:0;">
+                                    <dt class="text-sm font-normal text-gray-500 dark:text-gray-400"></dt>
+                                    <dd class="text-sm font-medium text-gray-900 dark:text-white">(Dont éco-part {{ (totalDeee / 1.2)|number_format(2, ',', '.') }} €)</dd>
+                                </dl>
+                                <dl class="flex items-center justify-between gap-4">
+                                    <dt class="text-base font-normal text-gray-500 dark:text-gray-400">TVA</dt>
+                                    <dd class="text-base font-medium text-gray-900 dark:text-white"
+                                        data-order-target="vat"
+                                        data-value={{ (totalPrice / 1.2 * 0.2) }}>{{ (totalPrice / 1.2 * 0.2)|number_format(2, ',', '.') }} €</dd>
+                                </dl>
+                            </div>
+
+                            <dl class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
+                                <dt class="text-base font-bold text-gray-900 dark:text-white">Total</dt>
+                                <dd class="text-base font-bold text-gray-900 dark:text-white"
+                                    data-order-target="total"
+                                    data-value={{ totalPrice }}>
+                                    {{ totalPrice|number_format(2, ',', '.') }} €
+                                </dd>
+                            </dl>
+                        </div>
+                        <a href="{{ redirect }}" class="product-cta text-center">Passer au règlement</a>
+                                            <div class="flex items-center justify-center gap-2">
+                        <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                            ou
+                        </span>
+                        <a href="{{ path('app_order_validate', {'id': order.id}) }}" title="Revenir au choix du mode de livraison" class="inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline dark:text-primary-500">
+                            changer le mode de livraison
+                            <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/>
+                            </svg>
+                        </a>
+                    </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+</div>
+{% endblock %}

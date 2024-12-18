@@ -1,0 +1,55 @@
+{% extends "admin/base.html.twig" %}
+{% block title %}Toutes les commandes{% endblock %}
+{% block body %}
+    <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 ">
+		<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+			<table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+				<caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+					Liste des commandes
+					<p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Voici la liste des commandes passées sur le site</p>
+                    {% include "_partials/_searchbar.html.twig" %}
+				</caption>
+				<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+					<tr>
+                        <th scope="col" class="px-6 py-3" >Index</th>
+                        <th scope="col" class="px-6 py-3" >Date</th>
+                        <th scope="col" class="px-6 py-3" >Nom du client</th>
+                        <th scope="col" class="px-6 py-3" >Produits</th>
+                        <th scope="col" class="px-6 py-3" >Statut de la commande</th>
+                        <th scope="col" class="px-6 py-3" >Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for order in orders %}
+						<tr class="bg-white border-b hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 max-h-10">
+							<td class="px-6 py-4">{{ order.id }}</td>
+							<td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                                {{ order.createdAt|date("d/m/Y", "Europe/Paris") }}
+                            </td>
+                            <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                                <a href="#">{{ order.customer.lastname|upper ~ ' ' ~ order.customer.firstname|capitalize }}</a>
+                            </td>
+                            <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                                {% for invoiceLine in order.invoiceLines %}
+                                    {{ invoiceLine.product.reference ~ ' - ' ~ invoiceLine.product.title}}<br>
+                                {% endfor %}
+                            </td>
+                            <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                                {{ order.orderStatus|trans }}
+                            </td>
+							<td>
+								<a href="{{ path('app_edit_order_show', {'id': order.id}) }}" class="text-green-500">Voir</a><br>
+                                {% if order.orderStatus in ['ORDER_CREATED', 'ORDER_COMPLETE'] %}
+								    {% include "admin/order/_delete_form.html.twig" with {'className': 'text-red-500'} %}</td>
+                                {% endif %}
+							</tr>
+					{% else %}
+						<tr>
+							<td colspan="6">Aucune donnée trouvée</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

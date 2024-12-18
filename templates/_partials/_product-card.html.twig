@@ -1,0 +1,50 @@
+<div class="product-card border border-gray-200 rounded-lg relative">
+    {% if product.pictureName %}
+        <img src="{{ asset('images/pictures/' ~ product.pictureName)}}" alt="Image de présentation du produit {{ product.title }}" class="product-image">
+    {% else %}
+        {% include "_partials/_product-image-placeholder.html.twig" %}
+    {% endif %}
+    <div class="p-2">
+        <h3 class="h-12 overflow-hidden">{{product.title ~ ' - ' ~ product.brand.title ~ ' - ' ~ product.reference }}</h3>
+        <div class="product-short-description">{{ product.description|striptags|replace({'<':' ', '>':' ', '&nbsp;': ' '})|u.truncate(60, '...') }}</div>
+        {% if product.currentPrice != product.salesInfo.sellingPrice %}
+            <div class="start-price-container">
+                <p class="start-price">{{ product.salesInfo.sellingPrice|number_format(2, ',', '.') }} €</p>
+            </div>
+        {% else %}
+            <div class="no-start-price"></div>
+        {% endif %}
+        <p class="current-price">{{ product.currentPrice|number_format(2, ',', '.') }} €</p>
+        <p class="deee">
+            {% if product.salesInfo.ecoContribution %}
+                dont {{ product.salesInfo.ecoContribution|number_format(2, ',', '.') }} € éco-part.
+            {% endif %}
+        </p>
+        <a href="{{ path('app_product', {'id': product.id, 'slug': product.slug}) }}" class="product-cta">En savoir plus</a>
+    </div>
+    <div class="card-stickers">
+        {% for productPromotion in product.productPromotions|sort((a, b) => a.promotion.odr <=> b.promotion.odr) %}
+            {% if productPromotion.promotion.startDate < date() and productPromotion.promotion.endDate > date() %}
+                {% if productPromotion.promotion.odr %}
+                    <a href="#">
+                        <div class="sticker text-white text-center px-2 pt-1 w-fit bg-[#123456]">
+                            ODR
+                        </div>
+                    </a>
+                {% else %}
+                    <a href="{{ path('app_promotion', {'id': productPromotion.promotion.id, 'slug': productPromotion.promotion.slug})}}">
+                        <div class="sticker text-white text-center px-2 pt-1 w-fit bg-[#e4306d]">
+                            {{ productPromotion.promotion.title }}
+                        </div>
+                    </a>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        {% if product.salesInfo.stock < 1 %}
+            <div class="sticker text-red-600 text-center px-2 pt-1 w-fit bg-red-200">
+                Produit indisponible
+            </div>
+        {% endif %}
+        
+    </div>
+</div>

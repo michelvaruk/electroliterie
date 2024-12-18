@@ -1,0 +1,43 @@
+{% extends "base.html.twig" %}
+{% block title %}
+    À propos de nous
+{% endblock %}
+
+{% block body %}
+    <div class="about-title relative">
+        <h1 id="about-title">Notre concept</h1>
+    </div>
+    <div class="container about">
+        <article class="about-article group">
+            {% if about.pictureName %}
+                <img src="{{ asset('images/pictures/' ~ about.pictureName) }}" class="h-full w-full object-cover object-center mb-4 rounded-xl" alt="illustration de notre point de vente">
+            {% endif %}
+            {{ about.description|raw }}
+        </article>
+        <article id="delivery" class="about-article group">
+            {% if delivery.pictureName %}
+                <img src="{{ asset('images/pictures/' ~ delivery.pictureName) }}" class="h-full w-full object-cover object-center mb-4 rounded-xl" alt="illustration de notre point de vente">
+            {% endif %}
+            <h2>La livraison</h2>
+            <div class="about-section">{{ delivery.description|raw }}</div>
+        </article>
+        <article id="waranty" class="about-article group">
+            {% if waranty.pictureName %}
+                <img src="{{ asset('images/pictures/' ~ waranty.pictureName) }}" class="h-full w-full object-cover object-center mb-4 rounded-xl" alt="illustration de notre point de vente">
+            {% endif %}
+            <h2>Le SAV, les garanties</h2>
+            <div class="about-section">{{ waranty.description|raw }}</div>
+        </article>
+        <article id="retail">
+            <div class="hours">
+                <h2>Se rendre au magasin</h2>
+                <p>Notre magasin est situé au 14 rue de l'industrie à Anglet (64600).</p>
+                <h3>Nos horaires d'ouverture :</h3>
+                <p>{{ about.hours ?? ''}}</p>
+                <a href="{{ path('app_contact') }}" class="product-cta">Nous contacter</a>
+            </div>
+            <div class="map">{{ ux_map(map, { 'data-controller': 'map', style: 'height: 300px', 'class': 'rounded-xl' }) }}</div>
+        </article>
+    </div>
+
+{% endblock %}

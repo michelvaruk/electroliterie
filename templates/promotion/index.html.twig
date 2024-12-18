@@ -1,0 +1,27 @@
+{% extends "base.html.twig" %}
+{% block title %}
+    {% if promotion is defined %}
+        {{ promotion.title }}
+    {% else %}
+        Résultats de recherche
+    {% endif %}
+{% endblock %}
+{% block body %}
+    <div class="container">
+        {% if promotion is defined %}
+            <h1>{{ promotion.title }}</h1>
+            <p class="italic">Offre valable du {{ promotion.startDate|date("d/m/Y") }} au {{ promotion.endDate|date("d/m/Y") }}.</p>
+            <div>{{ promotion.description|raw }}</div>
+        {% else %}
+            <h1>Résultats de recherche</h1>
+        {% endif %}
+
+        <div class="flex gap-4">
+            <div id="products-wrapper" class="flex gap-8">
+            {% for product in products %}
+                {% include "_partials/_product-card.html.twig" %}
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

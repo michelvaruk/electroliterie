@@ -1,0 +1,6 @@
+App\Entity\Adress:
+    properties:
+        zipCode:
+            - Regex:
+                pattern: '/^[1-9]{5}+/'
+                message: Merci de renseigner un code postal Français valide.

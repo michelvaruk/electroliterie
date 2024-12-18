@@ -1,0 +1,90 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+	{{ product.brand.title ~ ' - ' ~ product.title ~ ' - ' ~ product.reference }}
+{% endblock %}
+
+{% block body %}
+	<article class="container">
+		<section class="py-8 bg-white md:py-16 dark:bg-gray-900 antialiased">
+			<div class="max-w-screen-xl px-4 mx-auto 2xl:px-0">
+				<div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
+					<div class="shrink-0 max-w-md lg:max-w-lg mx-auto product-pictures-container" data-controller="product-carousel" data-product-carousel-target="picture">
+						<div class="main-picture">
+							{% if product.pictureName %}
+								<img data-action="click->product-carousel#showModale" src="{{ asset('images/pictures/' ~ product.pictureName)}}" alt="Photo du produit {{ product.title }}">
+							{% else %}
+								{% include "_partials/_product-image-placeholder.html.twig" %}
+							{% endif %}
+							<svg data-action="click->product-carousel#deleteModale" class="w-6 h-6 text-gray-800 dark:text-white hidden" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+								<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+							</svg>
+
+						</div>
+						<div class="other-pictures">
+							{% if product.pictureName %}
+								<div class="thumbnail" data-action="click->product-carousel#switch">
+									<img src="{{ asset('images/pictures/' ~ product.pictureName)}}" alt="Photo du produit {{ product.title }}">
+								</div>
+							{% endif %}
+							{% for picture in product.productPictures %}
+								<div class="thumbnail" data-product-carousel-target="picture" data-action="click->product-carousel#switch">
+									<img src="{{ asset('images/pictures/' ~ picture.pictureName)}}" alt="{{ picture.alt }}">
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="mt-6 sm:mt-8 lg:mt-0">
+						<h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
+							{{ product.brand.title ~ ' - ' ~ product.title ~ ' - ' ~ product.reference }}
+						</h1>
+						<div class="mt-4 sm:items-center sm:gap-4 sm:flex">
+							<p class="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white">
+								{{ product.currentPrice }} €
+							</p>
+						</div>
+
+						<div data-controller="cart-action" data-id="{{ product.id }}" class="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8 justify-between">
+							<a href="{{ path('app_cart_add', {'id': product.id})}}" class="text-white bg-[#e4306d] mt-4 sm:mt-0 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center justify-center" role="button">
+								<svg class="w-5 h-5 -ms-2 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24">
+									<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"/>
+								</svg>
+								Ajouter au panier
+							</a>
+							<p class="italic">Stock disponible : {{ product.salesInfo.stock }}</p>
+						</div>
+
+						<hr class="my-6 md:my-8 border-gray-200 dark:border-gray-800"/>
+
+						<div class="product-description">
+                            {{ product.description|raw }}
+                        </div>
+					</div>
+				</div>
+			</div>
+			{% if product.familyName.features|length > 0 %}
+				<div class="product-features">
+					<h2>Spécifications techniques</h2>
+					<div class="relative overflow-x-auto">
+						<table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 lg:w-[800px] lg:mx-auto">
+							<tbody>
+								{% for f in product.familyName.features %}
+									<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+										{% include "_partials/_features/_" ~ f ~ ".html.twig" %}
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			{% endif %}
+			{% if product.fileName %}
+				<a href="{{ asset('fichiers/' ~ product.fileName) }}" class="underline cursor-pointer">Télécharger la fiche constructeur</a>
+			{% endif %}
+			
+			{% if product.familyName.title != 'orphelin' %}
+				<a href="{{ path('app_family', {'id': product.familyName.id, 'slug': product.familyName.slug}) }}" class="block text-[#e4306d] font-bold w-fit mt-8 ml-4">➔ Découvrir tous les produits de la famille {{product.familyName.title}}</a>
+			{% endif %}
+		</section>
+	</article>
+{% endblock %}

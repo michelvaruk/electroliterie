@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Email de Must Ménager</title>
+	</head>
+	<body>
+		{% apply inline_css %}
+		<style>
+			{
+				# here, define your CSS styles as usual #
+			}
+			#EMAIL_CONTAINER > div {
+				padding: 4em 2em;
+				box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
+				min-height: 100vh;
+			}
+
+			h1 {
+				color: #2b4775;
+				font-size: 1.5rem;
+			}
+
+			h1,
+			p {
+				margin-top: 2rem;
+			}
+
+			img {
+				display: block;
+				max-width: 100%;
+				margin: 1em auto;
+			}
+
+			#logo {
+				width: 40%;
+			}
+		</style>
+		<table width="100%" align="left" border="0" style="margin:0" bgcolor="#FFFFFF">
+			<tbody>
+				<tr>
+					<td id="EMAIL_CONTAINER" align="left" width="100%">
+						<div
+							style="margin:0 auto;max-width:600px;width:100%">
+							{% block emailContent %}{% endblock %}
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		{% endapply %}
+	</body>
+</html>

@@ -1,0 +1,16 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Modification de la famille {{ family.title }}{% endblock %}
+
+{% block body %}
+    <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 ">
+		<div class="mb-5 p-5 pl-0 flex justify-between">
+			<h1>Modification de la famille {{ family.title}}</h1>
+			{{ include('admin/family/_delete_form.html.twig', { className: 'font-medium text-red-600 dark:text-blue-500 hover:underline'}) }}
+		</div>
+
+		{{ include('admin/family/_form.html.twig', {
+        'button_label': 'Mettre à jour',
+        'class_name': 'text-green-900 hover:text-white border border-green-800 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800 inline-block mt-8'}) }}
+	</div>
+{% endblock %}

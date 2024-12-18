@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ProductPictures{% endblock %}
+
+{% block body %}
+    <h1>ProductPictures</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ product_picture.id }}</td>
+            </tr>
+            <tr>
+                <th>Alt</th>
+                <td>{{ product_picture.alt }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ product_picture.type ? product_picture.type|join(', ') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_product_pictures_index') }}">back to list</a>
+
+    <a href="{{ path('app_product_pictures_edit', {'id': product_picture.id}) }}">edit</a>
+
+    {{ include('product_pictures/_delete_form.html.twig') }}
+{% endblock %}

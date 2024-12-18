@@ -1,0 +1,12 @@
+<div class="header-cart-element">
+    {% if product.pictureName %}
+        <img src="{{ asset('images/pictures/' ~ product.pictureName)}}" alt="">
+    {% else %}
+        {% include "_partials/_product-image-placeholder.html.twig" %}
+    {% endif %}
+    <div class="header-cart-text">
+        <p>{{ product.title }}</p>
+        <p class="italic">Quantité : {{ item.qty }}</p>
+        <p class="italic">{{ product.currentPrice * item.qty }} €</p>
+    </div>
+</div>

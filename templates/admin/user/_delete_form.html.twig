@@ -1,0 +1,5 @@
+<form method="post" action="{{ path('app_edit_user_delete', {'id': user.id}) }}" onsubmit="return confirm('Attention, vous êtes sur le point de supprimer cet utilisateur, en êtes-vous certain ?');">
+	<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+	<button class="btn {{ className|default }}">Supprimer</button>
+</form>
+

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% include "_partials/_head.html.twig" %}
+        <title>Must Ménager |
+			{% block title %}Accueil
+			{% endblock %}
+		</title>
+        <!-- Matomo -->
+        {% if app.environment == "prod" %}
+            <script>
+                var _paq = window._paq = window._paq || [];
+                /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+                _paq.push(['trackPageView']);
+                _paq.push(['enableLinkTracking']);
+                (function() {
+                    var u="//stats.centcommentaire.fr/";
+                    _paq.push(['setTrackerUrl', u+'matomo.php']);
+                    _paq.push(['setSiteId', '5']);
+                    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+                    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+                })();
+            </script>
+        {% endif %}
+		<!-- End Matomo Code -->
+        
+    </head>
+    <body>
+        {% include "_partials/_header.html.twig" %}
+        <main>
+            {% block body %}{% endblock %}
+        </main>
+        {% include "_partials/_footer.html.twig" %}
+    </body>
+</html>

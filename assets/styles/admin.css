@@ -1,0 +1,97 @@
+.cc_active,
+.not-active {
+  display: block;
+  width: .5rem;
+  height: .5rem;
+  border-radius: .5rem;
+}
+
+.not-active {
+  background-color: rgb(224 36 36);
+}
+
+.cc_active {
+  background-color: rgb(5 122 85);
+}
+
+.hidden-over {
+  display: none;
+}
+
+.text-gray-900.item-active {
+  background-color: var(--blue);
+  color: var(--white);
+}
+
+.item-active:hover {
+  color: var(--filter);
+}
+
+.admin-pic {
+  height: 4em;
+  width: 4em;
+  object-fit: contain;
+}
+
+.vich-image img {
+  height: 8em;
+  width: 8em;
+  object-fit: contain;
+}
+.admin-filter-container {
+  padding: 1em;
+}
+
+.admin-filter-new {
+  width: 100%;
+}
+
+@media screen and (min-width: 1024px) {
+  #admin form > div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    row-gap: 2em;
+  }
+
+  .third {
+    width: 30%;
+  }
+
+  .half {
+    width: 48%;
+  }
+
+  .two-thirds {
+    width: 65%;
+  }
+
+  .admin-filter-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+  }
+  
+  .admin-filter-container .admin-filter-family {
+    width: calc(100% / 4 - 3em);
+  }
+  
+  .admin-filter-new > div {
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+  }
+  
+  .collection-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2em;
+  }
+  .collection-form-element {
+    width: calc(( 100% - 4em ) / 3);
+    border: #91a9c2 1px solid;
+    border-radius: 1em;
+    padding: 1em;
+  }
+  
+}

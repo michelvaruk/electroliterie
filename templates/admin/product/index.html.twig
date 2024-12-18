@@ -1,0 +1,107 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}Liste des produits
+{% endblock %}
+
+{% block body %}
+	<div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 ">
+		<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+			<table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" data-controller="admin-filter">
+				<caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+					Liste des produits
+					<p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Voici la liste des produits enregistrés</p>
+					{% include "_partials/_searchbar.html.twig" with {'element': 'produit'} %}
+					<div class="admin-filter-container">
+						{% for family in families %}
+							<div class="flex items-center mr-4 admin-filter-family">
+								<input type="checkbox" id="{{ family.title ~ '_' ~ loop.index }}" name="{{ family.title }}" data-admin-filter-target="filters" data-action="input->admin-filter#filter"
+								class="rounded w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"/>
+								<label for="{{ family.title ~ '_' ~ loop.index }}" class="ml-2 text-sm font-medium text-gray-900">{{ family.title|capitalize }}</label>
+							</div>
+						{% endfor %}
+						<div class="admin-filter-new">
+							<div class="mt-4 cursor-pointer font-normal underline lg:text-center" data-action="click->admin-filter#new">
+								Ré-initialiser les filtres
+							</div>
+						</div>
+					</div>
+				</caption>
+				<div class="flex justify-end">
+					<a href="{{ path('app_edit_product_family') }}" class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800 inline-block mt-8">Nouveau produit</a>
+				</div>
+				<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+					<tr>
+                        <th scope="col" class="px-6 py-3" >Photo de présentation</th>
+                        <th scope="col" class="px-6 py-3" >Nom du produit</th>
+                        <th scope="col" class="px-6 py-3" >EAN</th>
+                        <th scope="col" class="px-6 py-3" >Reference</th>
+                        <th scope="col" class="px-6 py-3" >Stock</th>
+						<th scope="col" class="px-6 py-3" >Prix de vente</th>
+						<th scope="col" class="px-6 py-3" >Sélection</th>
+						<th scope="col" class="px-6 py-3" >Statut</th>
+                        <th scope="col" class="px-6 py-3" >Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for product in products %}
+						<tr class="bg-white border-b hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 max-h-10" data-admin-filter-target="products" data-family="{{ product.familyName.title }}"
+						{% if product.familyName.parent %}data-parent="{{ product.familyName.parent.title }}"{% endif %}>
+							<td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+								{% if product.pictureName %}
+									<img src="{{ asset('images/pictures/' ~ product.pictureName) }}" alt="Photo du produit {{ product.reference }}" class="admin-pic">
+								{% else %}
+									Aucune image pour ce produit
+								{% endif %}
+                            </td>
+							<td class="px-6 py-4">{{ product.title }}<span class="sr-only">{{ product.familyName ? product.familyName.title : '' }}</span></td>
+							<th class="px-6 py-4">{{ product.EAN|capitalize }}</th>
+							<th class="px-6 py-4">{{ product.reference|capitalize }}</th>
+							<td class="px-6 py-4">
+								{{ product.salesInfo.stock }}
+							</td>
+							<td class="px-6 py-4">
+								{% if product.salesInfo.discountPrice != null  and 0 < product.salesInfo.discountPrice %}
+									{{ product.salesInfo.discountPrice|number_format(2, ',', '.') }}
+								{% else %}
+									{{ product.salesInfo.sellingPrice|number_format(2, ',', '.') }}
+								{% endif %} €
+							</td>
+							<td class="px-6 py-4">
+								<form method="post" action="{{ path('app_edit_product_switch', {'id': product.id}) }}" onsubmit="return confirm('Voulez vous vraiment {{ product.isSelection ? 'retirer' : 'ajouter' }} le produit {{ product.title }} {{ product.isSelection ? 'de' : 'à' }} la sélection ?');">
+									<input type="hidden" name="type" value="star">
+									<input type="hidden" name="_token" value="{{ csrf_token('switch' ~ product.id) }}">
+									<button title="{{ product.isSelection ? 'Retirer ce produit de la sélection' : 'Ajouter ce produit à la sélection'}}">
+										{% if product.isSelection %}
+											<svg class="w-6 h-6 text-yellow-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+												<path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z"/>
+											</svg>
+										{% else %}
+											<svg class="w-6 h-6 text-yellow-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+												<path stroke="currentColor" stroke-width="2" d="M11.083 5.104c.35-.8 1.485-.8 1.834 0l1.752 4.022a1 1 0 0 0 .84.597l4.463.342c.9.069 1.255 1.2.556 1.771l-3.33 2.723a1 1 0 0 0-.337 1.016l1.03 4.119c.214.858-.71 1.552-1.474 1.106l-3.913-2.281a1 1 0 0 0-1.008 0L7.583 20.8c-.764.446-1.688-.248-1.474-1.106l1.03-4.119A1 1 0 0 0 6.8 14.56l-3.33-2.723c-.698-.571-.342-1.702.557-1.771l4.462-.342a1 1 0 0 0 .84-.597l1.753-4.022Z"/>
+											</svg>
+										{% endif %}
+									</button>
+								</form>
+							</td>
+							<td class="px-6 py-4">
+								<form method="post" action="{{ path('app_edit_product_switch', {'id': product.id}) }}" onsubmit="return confirm('Voulez vous vraiment {{ product.isActive ? 'désactiver' : 'activer' }} le produit {{ product.title }} ?');">
+									<input type="hidden" name="type" value="active">
+									<input type="hidden" name="_token" value="{{ csrf_token('switch' ~ product.id) }}">
+									<button {{ product.isActive ? 'class="cc_active" title="activé, cliquer pour désactiver"' : 'class="not-active" title="désactivé, cliquer pour activer"' }}></button>
+								</form>
+							</td>
+							<td>
+								<a href="{{ path('app_edit_product_edit', {'id': product.id}) }}" class="text-orange-500">Modifier</a><br>
+								{% include "admin/product/_delete_form.html.twig" with {'className': 'text-red-500'} %}</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="6">Aucune donnée trouvée</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		
+	</div>
+{% endblock %}

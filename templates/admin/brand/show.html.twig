@@ -1,0 +1,35 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}
+	{{brand.title}}
+{% endblock %}
+
+{% block body %}
+	<div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 ">
+		<div class="shadow-md sm:rounded-lg mb-5 p-5">
+			<div class="px-4 sm:px-0 show-heading">
+				<div class="show-title">
+					<h1 class="text-base font-semibold leading-7 text-gray-900">{{ brand.title }}</h1>
+					<p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500"></p>
+				</div>
+				<div class="show-buttons">
+					<a href="{{ path('app_edit_product_edit', {'id': brand.id}) }}" class="font-medium text-orange-600 dark:text-blue-500 hover:underline">Modifier</a>
+					{{ include('admin/products/_delete_form.html.twig', { className: 'font-medium text-red-600 dark:text-blue-500 hover:underline'}) }}
+				</div>
+			</div>
+
+			<div class="mt-6 border-t border-gray-100">
+				<dl class="divide-y divide-gray-100">
+					<div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+						<dt class="text-sm font-medium leading-6 text-gray-900">Nom marque</dt>
+						<dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ brand.title}}</dd>
+					</div>
+
+                    <div class="px-4 py-6 sm:grid sm:grid-cols-6 sm:gap-4 sm:px-0 sm:justify-items-center">
+						<img src="{{ asset('images/pictures/' ~ brand.pictureName)}}" alt="Logo de la marque {{ brand.title }}" class="block ml-auto mr-auto mb-2">
+					</div>
+                </dl>
+			</div>
+		</div>
+	</div>
+{% endblock %}

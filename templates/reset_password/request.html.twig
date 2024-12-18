@@ -1,0 +1,21 @@
+{% extends 'login-base.html.twig' %}
+
+{% block title %}Demande de création ou de réinitialisation de mot de passe{% endblock %}
+
+{% block body %}
+    {% for flash_error in app.flashes('reset_password_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+    <h1>Demande de création ou de réinitialisation de mot de passe</h1>
+
+    {{ form_start(requestForm) }}
+        {{ form_row(requestForm.email) }}
+        <div>
+            <p class="text-xs italic mb-4">
+                Merci de renseigner votre adresse email, un lien vous sera envoyé pour générer votre mot de passe.
+            </p>
+        </div>
+
+        <button class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Envoyer la demande</button>
+    {{ form_end(requestForm) }}
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Enregistrement d'un nouvel utilisateur{% endblock %}
+
+{% block body %}
+<div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 ">
+    <h1>Enregistrement d'un nouvel utilisateur</h1>
+
+    {{ include('admin/user/_form.html.twig') }}
+
+</div>
+{% endblock %}

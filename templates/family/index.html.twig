@@ -1,0 +1,44 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ family.title|capitalize }}{% endblock %}
+
+{% block body %}
+<div data-controller="filter" class="mobile-filter-container">
+    <button class="product-cta filter-cta mobile-filter" data-action="click->filter#mobileSwitch">Filtrer les résultats</button>
+    <div class="filter bg-slate-500" data-controller="display-filter">
+        {% for feature, items in filters %}
+            <div class="filter-feature">
+                {% include "_partials/_filters/_" ~ feature ~ ".html.twig" %}
+            </div>
+        {% endfor %}
+        <button data-action="click->filter#init" class="product-cta filter-cta">Ré-initialiser les filtres</button>
+        <button data-action="click->filter#mobileSwitch" class="product-cta">Voir les résultats</button>
+        <p class="filter-sticker bg-slate-500" data-action="click->display-filter#switch">Filtrer</p>
+    </div>
+    <article class="container filtered filter-displayed">
+        <h1>Famille {{ family.title }}</h1>
+        <div id="products-wrapper" class="flex gap-8">
+            {% for product in products|sort((a, b) => a.currentPrice <=> b.currentPrice) %}
+                {% set f = product.feature %}
+                <div class="must-card"
+                    data-filter-target="product"
+                    data-id="{{ loop.index0 }}"
+                    data-length="{{ f.length }}"
+                    data-width="{{ f.width }}"
+                    data-colorName="{{ f.colorName }}"
+                    data-height="{{ f.height }}"
+                    data-feetShape="{{ f.feetShape }}"
+                    data-type="{{ f.type }}"
+                    data-technology="{{ f.technology }}"
+                    data-cover="{{ f.cover }}"
+                    data-support="{{ f.support }}"
+                    data-price="{{ product.currentPrice }}"
+                    data-brand="{{ product.brand.title }}">
+                    {% include "_partials/_product-card.html.twig" %}
+                </div>
+            {% endfor %}
+        </div>
+    </article>
+</div>
+
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}Mon compte{% endblock %}
+
+{% block body %}
+<div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 ">
+    <section class="shadow-md sm:rounded-lg mb-5 p-5">
+        <div class="px-4 sm:px-0 show-heading">
+            <div class="show-title">
+                <h1 class="text-base font-semibold leading-7 text-gray-900">Mon compte</h1>
+                <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Voici les informations relatives à votre compte</p>
+            </div>
+            <div class="show-buttons">
+                <a href="{{ path('app_edit_account_edit') }}">Modifier</a>
+            </div>
+        </div>
+        <div class="mt-6 border-t border-gray-100">
+            <dl class="divide-y divide-gray-100">
+                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt class="text-sm font-medium leading-6 text-gray-900">Mon nom :</dt>
+                    <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ user.lastname|capitalize }}</dd>
+                </div>
+            </dl>
+        </div>
+        <div class="mt-6 border-t border-gray-100">
+            <dl class="divide-y divide-gray-100">
+                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt class="text-sm font-medium leading-6 text-gray-900">Mon prénom :</dt>
+                    <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ user.firstname|capitalize }}</dd>
+                </div>
+            </dl>
+        </div>
+        <div class="mt-6 border-t border-gray-100">
+            <dl class="divide-y divide-gray-100">
+                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt class="text-sm font-medium leading-6 text-gray-900">Mon adresse email :</dt>
+                    <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ user.email }}</dd>
+                </div>
+            </dl>
+        </div>
+        <div class="mt-6 border-t border-gray-100">
+            <dl class="divide-y divide-gray-100">
+                <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt class="text-sm font-medium leading-6 text-gray-900">Mes accès :</dt>
+                    <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                        {% for role in user.roles %}
+                            {% if role in ["ROLE_SUPER_ADMIN", "ROLE_ADMIN"] %}
+                                Administrateur
+                            {% elseif role == "ROLE_EDITOR" %}
+                                Éditeur
+                            {% endif %}
+                        {% endfor %}
+                    </dd>
+                </div>
+            </dl>
+        </div>
+    </section>
+</div>
+{% endblock %}

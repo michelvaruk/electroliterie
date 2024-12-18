@@ -1,0 +1,96 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}
+	{{promotion.title}}
+{% endblock %}
+
+{% block body %}
+	<div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 ">
+		<div class="shadow-md sm:rounded-lg mb-5 p-5">
+			<div class="px-4 sm:px-0 show-heading">
+				<div class="show-title">
+					<h1 class="text-base font-semibold leading-7 text-gray-900">{{ promotion.title }}</h1>
+					<p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500"></p>
+				</div>
+				<div class="show-buttons">
+					<a href="{{ path('app_edit_product_edit', {'id': promotion.id}) }}" class="font-medium text-orange-600 dark:text-blue-500 hover:underline">Modifier</a>
+					{{ include('admin/products/_delete_form.html.twig', { className: 'font-medium text-red-600 dark:text-blue-500 hover:underline'}) }}
+				</div>
+			</div>
+
+			<div class="mt-6 border-t border-gray-100">
+				<dl class="divide-y divide-gray-100">
+					<div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+						<dt class="text-sm font-medium leading-6 text-gray-900">Intitulé promotion</dt>
+						<dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ promotion.title}}</dd>
+					</div>
+
+					<div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+						<dt class="text-sm font-medium leading-6 text-gray-900">Montant promotion</dt>
+						<dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ promotion.value}}</dd>
+					</div>
+
+					<div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+						<dt class="text-sm font-medium leading-6 text-gray-900">Date de début</dt>
+						<dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                            {{promotion.startDate}}
+						</dd>
+					</div>
+
+                    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+						<dt class="text-sm font-medium leading-6 text-gray-900">Date de fin</dt>
+						<dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                            {{promotion.endDate}}
+						</dd>
+					</div>
+				</dl>
+			</div>
+
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+                     
+                        <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Voici la liste des produits concerné par la promotion
+                            {{ promotion.title }}.
+                        </p>
+                    </caption>
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">Nom</th>
+                            <th scope="col" class="px-6 py-3">EAN</th>
+                            <th scope="col" class="px-6 py-3">Photo de présentation</th>
+                            {# <th scope="col" class="px-6 py-3">
+                                <span class="sr-only">Actions</span>
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                <span class="sr-only">Ordre</span>
+                            </th> #}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for  product in products %}
+                            <tr class="bg-white border-b hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ office.title|capitalize }}</th>
+                                <td class="px-6 py-4">{{ product.title }}</td>
+                                <td class="px-6 py-4">{{ product.EAN }}</td>
+                    	        <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                                    {% if product.imageName is defined %}
+                                        <img src="{{ asset('images/products/' ~ product.imageName) }}" alt="Photo du produit {{ product.title}}" class="w-8 h-8">
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <a href="{{ path('app_edit_product_show', {'id': product.id}) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Voir</a><br>
+                                    <a href="{{ path('app_edit_product_edit', {'id': product.id}) }}" class="font-medium text-orange-600 dark:text-blue-500 hover:underline">Modifier</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6">Aucune donnée trouvée</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+		</div>
+	</div>
+</div>{% endblock %}

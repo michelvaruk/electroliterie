@@ -1,0 +1,54 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}Liste des métiers
+{% endblock %}
+
+{% block body %}
+	<div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 ">
+		<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+			<table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+				<caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+					Liste des métiers
+					<p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Voici la liste des métiers répertoriés sur la page d'accueil et le menu.</p>
+				</caption>
+				<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+					<tr>
+                        <th scope="col" class="px-6 py-3" >Nom du métier</th>
+                        <th scope="col" class="px-6 py-3" >Photo</th>
+						<th scope="col" class="px-6 py-3" >Statut</th>
+                        <th scope="col" class="px-6 py-3" >Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for profession in professions %}
+						<tr class="bg-white border-b hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 max-h-10">
+							<td class="px-6 py-4">{{ profession.title }}</td>
+							<td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                                {% if profession.pictureName %}
+                                    <img src="{{ asset('images/pictures/' ~ profession.pictureName) }}" alt="Image de présentation du métier {{ profession.title}}" class="admin-pic">
+                                {% endif %}
+                            </td>
+							<td class="px-6 py-4">
+								<form method="post" action="{{ path('app_edit_profession_switch', {'id': profession.id}) }}" onsubmit="return confirm('Voulez vous vraiment {{ profession.isActive ? 'désactiver' : 'activer' }} le métier {{ profession.title }} ?');">
+									<input type="hidden" name="type" value="active">
+									<input type="hidden" name="_token" value="{{ csrf_token('switch' ~ profession.id) }}">
+									<button {{ profession.isActive ? 'class="cc_active" title="activé, cliquer pour désactiver"' : 'class="not-active" title="désactivé, cliquer pour activer"' }}></button>
+								</form>
+							</td>
+							<td class="px-6 py-4">
+								<a href="{{ path('app_edit_profession_edit', {'id': profession.id}) }}" class="text-orange-500">Modifier</a><br>
+								{% include "admin/profession/_delete_form.html.twig" with {'className': 'text-red-500'} %}</td>
+							</tr>
+					{% else %}
+						<tr>
+							<td colspan="6">Aucune donnée trouvée</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<div class="flex justify-end">
+			<a href="{{ path('app_edit_profession_new') }}" class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800 inline-block mt-8">Nouveau métier</a>
+		</div>
+	</div>
+{% endblock %}

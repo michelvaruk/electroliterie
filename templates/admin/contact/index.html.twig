@@ -1,0 +1,52 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}Liste des messages
+{% endblock %}
+
+{% block body %}
+	<div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 ">
+		<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+			<table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+				<caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+					Liste des messages
+					<p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Voici la liste des messages reçus via le formulaire de contact du site</p>
+                    {% include "_partials/_searchbar.html.twig" %}
+				</caption>
+				<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+					<tr>
+						<th scope="col" class="px-6 py-3">Date d'envoi</th>
+						<th scope="col" class="px-6 py-3">Email</th>
+						<th scope="col" class="px-6 py-3">Titre du message</th>
+						<th scope="col" class="px-6 py-3">Contenu</th>
+						<th scope="col" class="px-6 py-3">
+							<span class="sr-only">Actions</span>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for contact in contacts %}
+						<tr class="bg-white border-b hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 max-h-10">
+							<td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                                Le {{ contact.createdAt|date("d/m/Y à H:i", "Europe/Paris") }}</td>
+							<td class="px-6 py-4">{{ contact.email }}</td>
+							<th class="px-6 py-4{{ contact.isRead ? ' font-normal' : '' }}">{{ contact.title }}</th>
+							<td class="relative to-hover px-6 py-4{{ contact.isRead ? '' : ' font-bold' }}">
+                                {{ contact.message|u.truncate(50, '...') }}
+                                <div class="absolute hovered bottom-0 z-10 shadow-xl rounded hidden p-4">{{ contact.message }}</div>
+                            </td>
+							<td class="px-6 py-4 text-right whitespace-nowrap">
+								<a href="{{ path('app_edit_contact_show', {'id': contact.id}) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Lire</a><br>
+                                <a href="{{ path('app_edit_contact_read', {'id': contact.id}) }}" class="font-medium text-green-600 dark:text-green-500 hover:underline">{{contact.isRead ? 'Marquer non lu' : 'Marquer lu'}}</a><br>
+                                {{ include('admin/contact/_delete_form.html.twig', { className: 'font-medium text-red-600 dark:text-blue-500 hover:underline'}) }}
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="6">Aucune donnée trouvée</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

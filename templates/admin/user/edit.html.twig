@@ -1,0 +1,13 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Modification d'un utilisateur{% endblock %}
+
+{% block body %}
+<div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 ">
+    <div class="mb-5 p-5 pl-0 flex justify-between">
+        <h1>Modification de l'utilisateur {{ user.firstname ~ ' ' ~ user.lastname }}</h1>
+        {{ include('admin/user/_delete_form.html.twig', { className: 'font-medium text-red-600 dark:text-blue-500 hover:underline'}) }}
+    </div>
+    {{ include('admin/user/_form.html.twig') }}
+</div>
+{% endblock %}

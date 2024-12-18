@@ -1,0 +1,69 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}Liste des utilisateurs enregistrés
+{% endblock %}
+
+{% block body %}
+	<div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 ">
+		<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+			<table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+				<caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
+					Liste des utilisateurs enregistrés
+					<p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Voici la liste des utilisateurs enregistrés sur le site, avec leurs accès</p>
+				</caption>
+				<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+					<tr>
+						<th scope="col" class="px-6 py-3">Photo</th>
+						<th scope="col" class="px-6 py-3">Nom</th>
+						<th scope="col" class="px-6 py-3">Prénom</th>
+                        <th scope="col" class="px-6 py-3">Email</th>
+						<th scope="col" class="px-6 py-3">Accès</th>
+						{% if is_granted('ROLE_ADMIN') %}
+							<th scope="col" class="px-6 py-3">Dernière connexion</th>
+							<th scope="col" class="px-6 py-3">
+								<span class="sr-only">Actions</span>
+							</th>
+						{% endif %}
+					</tr>
+				</thead>
+				<tbody>
+					{% for user in users %}
+						<tr class="bg-white border-b hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 max-h-10">
+							<td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                                {% if user.imageName is defined %}
+                                    <img src="{{ asset('images/collaborateurs/' ~ user.imageName) }}" alt="Photo de l'utilisateur {{ user.firstname ~ ' ' ~ user.lastname }}" class="w-8 h-8 rounded-full">
+                                {% endif %}
+                            </td>
+							<th class="px-6 py-4">{{ user.lastname }}</th>
+							<th class="px-6 py-4">{{ user.firstname }}</th>
+							<td class="px-6 py-4">{{ user.email }}</td>
+                            <td class="px-6 py-4">
+                                {% for role in user.roles %}
+                                    {% if role in ["ROLE_SUPER_ADMIN","ROLE_ADMIN"] %}
+										administrateur
+									{% elseif role == "ROLE_EDITOR" %}
+										éditeur
+									{% endif %}
+                                {% endfor %}
+                            </td>
+							{% if is_granted('ROLE_ADMIN') %}
+								<td class="px-6 py-4">{{ user.lastConnexion ? user.lastConnexion|date("d/m/Y à H:i", "Europe/Paris") : '' }}</td>
+								<td class="px-6 py-4 text-right whitespace-nowrap">
+									<a href="{{ path('app_edit_user_edit', {'id': user.id}) }}">Modifier</a> <br>
+									{{ include('admin/user/_delete_form.html.twig', { className: 'font-medium text-red-600 dark:text-blue-500 hover:underline'}) }}
+								</td>
+							{% endif %}
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="6">Aucune donnée trouvée</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<div class="flex justify-end">
+			<a href="{{ path('app_edit_user_new') }}" class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800 inline-block mt-8">Nouvel utilisateur</a>
+		</div>
+	</div>
+{% endblock %}

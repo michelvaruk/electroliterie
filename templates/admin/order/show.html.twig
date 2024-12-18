@@ -1,0 +1,119 @@
+{% extends "admin/base.html.twig" %}
+
+{% block title %}Commande n°{{ order.id }}{% endblock %}
+
+{% block body %}
+    <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg">
+		<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+			<table class="w-full text-sm text-left rtl:text-right text-gray-500">
+				<caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white">
+					Commande n°{{ order.id }} du {{ order.createdAt|date("d/m/Y", "Europe/Paris") }}
+                    <p class="italic font-normal">{{ order.orderStatus|trans }}</p>
+                    <div class="mt-6 border-t border-gray-100">
+                        <dl class="divide-y divide-gray-100">
+                            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Prénom :</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ order.customer.firstname|capitalize }}</dd>
+                            </div>
+                            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Nom :</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ order.customer.lastname|capitalize }}</dd>
+                            </div>
+                            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">N° de téléphone :</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ order.customer.phone }}</dd>
+                            </div>
+                            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Email :</dt>
+                                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ order.customer.email }}</dd>
+                            </div>
+                        </dl>
+                    </div>
+				</caption>
+				<thead class="text-xs text-gray-700 uppercase bg-gray-50">
+					<tr>
+                        <th scope="col" class="px-6 py-3" >Référence</th>
+                        <th scope="col" class="px-6 py-3" >Désignation</th>
+                        <th scope="col" class="px-6 py-3" >Type</th>
+                        <th scope="col" class="px-6 py-3" >Prix unitaire HT</th>
+                        <th scope="col" class="px-6 py-3" >TVA</th>
+                        <th scope="col" class="px-6 py-3" >Quantité</th>
+                        <th scope="col" class="px-6 py-3" >Total</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for line in order.invoiceLines %}
+                    {% set product = line.product %}
+						<tr class="bg-white border-b hover:bg-gray-50 max-h-10">
+							<td class="px-6 py-4">{{ product.reference }}</td>
+							<td class="px-6 py-4 font-medium text-gray-900">
+                                {{ product.title }}
+                            </td>
+                            <td class="px-6 py-4 font-medium text-gray-900">
+                                {{ product.familyName.title }}
+                            </td>
+                            <td class="px-6 py-4 font-medium text-gray-900">
+                                {{ line.taxFreeUnitPrice|number_format(2, ',', '.') }} €<br>
+                                <p class="italic">(dont {{ line.taxFreeDeee|number_format(2, ',', '.') }} € éco-part)</p>
+                            </td>
+							<td class="px-6 py-4 font-medium text-gray-900">
+								{{ line.vatRate }} %
+							</td>
+                            <td class="px-6 py-4 font-medium text-gray-900">
+                                {{ line.quantity }}
+                            </td>
+                            <td class="px-6 py-4 font-medium text-gray-900">
+								{{ (line.taxFreeUnitPrice * line.quantity * (100 + line.vatRate) / 100)|number_format(2, ',', '.') }} €
+							</td>
+                        </tr>
+					{% else %}
+						<tr>
+							<td colspan="6">Aucune donnée trouvée</td>
+						</tr>
+					{% endfor %}
+                    {% if order.deliveryMode %}
+                        <tr>
+                            <td class="px-6 py-4 font-medium text-gray-900"></td>
+                            <td class="px-6 py-4 font-medium text-gray-900">{{ order.deliveryMode.title }}</td>
+                            <td class="px-6 py-4 font-medium text-gray-900"></td>
+                            <td class="px-6 py-4 font-medium text-gray-900">{{ order.deliveryTaxFreePrice|number_format(2, ',', '.') }} €</td>
+                            <td class="px-6 py-4 font-medium text-gray-900">20 %</td>
+                            <td class="px-6 py-4 font-medium text-gray-900"></td>
+                            <td class="px-6 py-4 font-medium text-gray-900">{{ (order.deliveryTaxFreePrice * 1.2)|number_format(2, ',', '.') }} €</td>
+                        </tr>
+                    {% endif %}
+				</tbody>
+                <tfoot class="text-gray-700 uppercase">
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right text-xs font-bold px-6 py-4 text-gray-900">Total HT</td>
+                        <td class="text-right text-xs font-bold px-6 py-4 text-gray-900">{{ total.totalHt|number_format(2, ',', '.') }} €</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right text-xs font-bold px-6 py-4 text-gray-900">Total TVA</td>
+                        <td class="text-right text-xs font-bold px-6 py-4 text-gray-900">{{ total.totalVat|number_format(2, ',', '.') }} €</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-right font-bold px-6 py-4 text-gray-900">Total TTC</td>
+                        <td class="text-right font-bold px-6 py-4 text-gray-900">{{ total.totalTtc|number_format(2, ',', '.') }} €</td>
+                    </tr>
+                </tfoot>
+			</table>
+		</div>
+        <a href="{{ path('app_edit_order_index') }}" class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800 inline-block mt-8">Retour</a>
+	</div>
+{% endblock %}

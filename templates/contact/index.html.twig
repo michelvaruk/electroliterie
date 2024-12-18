@@ -1,0 +1,12 @@
+{% extends 'login-base.html.twig' %}
+
+{% block title %}Contacter Must Ménager{% endblock %}
+
+{% block body %}
+   <h1 class="font-bold text-center uppercase">Contacter Must Ménager</h1>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="text-center product-cta">Envoyer</button>
+    {{ form_end(form) }}
+{% endblock %}

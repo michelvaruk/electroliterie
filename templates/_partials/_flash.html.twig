@@ -1,0 +1,23 @@
+{% for message in app.flashes('success') %}
+	<div id="alert-3" class="message flex w-full bg-green-100 gap-6 rounded-lg overflow-hidden divide-x mt-4 mb-4" data-flash-target="message">
+		<div class="flex flex-1 flex-col p-4">
+			<span class="text-2xl text-green-600">Info</span>
+			<span class="italic text-green-950">
+				{{ message }}
+			</span>
+		</div>
+		<button class="px-4 font-bold bg-green-300 text-green-600 flex items-center text-xs uppercase tracking-wide" data-dismiss-target="#alert-3">Effacer</button>
+	</div>
+{% endfor %}
+
+{% for message in app.flashes('alert') %}
+	<div id="alert-4" class="message flex w-full bg-red-100 gap-6 rounded-lg overflow-hidden divide-x mt-4 mb-4" data-flash-target="message">
+		<div class="flex flex-1 flex-col p-4">
+			<span class="text-2xl text-red-600">Info</span>
+			<span class="italic text-red-950">
+				{{ message }}
+			</span>
+		</div>
+		<button class="px-4 font-bold bg-red-300 text-red-600 flex items-center text-xs uppercase tracking-wide" data-dismiss-target="#alert-4">Effacer</button>
+	</div>
+{% endfor %}

@@ -1,0 +1,7 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <div class="flex justify-between">
+        <a href="{% if "utilisateurs" in app.request.pathinfo|split('/') %}{{ path('app_edit_user_index') }}{% elseif "mon-compte" in app.request.pathinfo|split('/') %}{{ path('app_edit_account_show') }}{% endif %}" class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800 inline-block mt-8">Retour</a>
+        <button class="btn text-orange-700 hover:text-white border border-orange-700 hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:border-orange-500 dark:text-orange-500 dark:hover:text-white dark:hover:bg-orange-600 dark:focus:ring-orange-800 inline-block mt-8">{{ button_label|default('Enregistrer') }}</button>
+    </div>
+{{ form_end(form) }}

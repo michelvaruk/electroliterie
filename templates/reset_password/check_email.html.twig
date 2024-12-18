@@ -1,0 +1,12 @@
+{% extends 'login-base.html.twig' %}
+
+{% block title %}Email de génération de mot de passe envoyé{% endblock %}
+
+{% block body %}
+    <h1>Demande envoyée</h1>
+    <p class="text-base italic mb-4">
+        Si votre email est renseigné en base, nous venons de vous envoyer un message contenant un lien de génération de votre mot de passe.
+        Ce lien expirera dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+    </p>
+    <p class="text-base italic mb-4">Dans le cas où vous ne l'auriez pas reçu, merci de vérifier vos spams ou de <a href="{{ path('app_forgot_password_request') }}">ré-essayer</a>.</p>
+{% endblock %}
